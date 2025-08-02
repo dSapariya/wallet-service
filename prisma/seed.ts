@@ -4,22 +4,16 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Create a test wallet
-  const wallet = await prisma.wallet.upsert({
-    where: { id: 'test-wallet-1' },
-    update: {},
-    create: {
-      id: 'test-wallet-1',
+  const wallet = await prisma.wallet.create({
+    data: {
       name: 'Test Wallet',
       balance: 100.5000,
     },
   });
 
   // Create some sample transactions
-  await prisma.transaction.upsert({
-    where: { id: 'test-transaction-1' },
-    update: {},
-    create: {
-      id: 'test-transaction-1',
+  await prisma.transaction.create({
+    data: {
       walletId: wallet.id,
       amount: 100.5000,
       balance: 100.5000,
@@ -28,11 +22,8 @@ async function main() {
     },
   });
 
-  await prisma.transaction.upsert({
-    where: { id: 'test-transaction-2' },
-    update: {},
-    create: {
-      id: 'test-transaction-2',
+  await prisma.transaction.create({
+    data: {
       walletId: wallet.id,
       amount: 25.7500,
       balance: 126.2500,
@@ -41,11 +32,8 @@ async function main() {
     },
   });
 
-  await prisma.transaction.upsert({
-    where: { id: 'test-transaction-3' },
-    update: {},
-    create: {
-      id: 'test-transaction-3',
+  await prisma.transaction.create({
+    data: {
       walletId: wallet.id,
       amount: -15.3000,
       balance: 110.9500,

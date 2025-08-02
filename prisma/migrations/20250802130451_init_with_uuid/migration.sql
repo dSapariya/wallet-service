@@ -3,7 +3,7 @@ CREATE TYPE "public"."TransactionType" AS ENUM ('CREDIT', 'DEBIT');
 
 -- CreateTable
 CREATE TABLE "public"."wallets" (
-    "id" TEXT NOT NULL,
+    "id" TEXT NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
     "balance" DECIMAL(10,4) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -14,7 +14,7 @@ CREATE TABLE "public"."wallets" (
 
 -- CreateTable
 CREATE TABLE "public"."transactions" (
-    "id" TEXT NOT NULL,
+    "id" TEXT NOT NULL DEFAULT gen_random_uuid(),
     "walletId" TEXT NOT NULL,
     "amount" DECIMAL(10,4) NOT NULL,
     "balance" DECIMAL(10,4) NOT NULL,

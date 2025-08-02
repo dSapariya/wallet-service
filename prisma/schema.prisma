@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Wallet {
-  id          String        @id @default(cuid())
+  id          String        @id @default(uuid())
   name        String
   balance     Decimal       @db.Decimal(10, 4)
   createdAt   DateTime      @default(now())
@@ -19,7 +19,7 @@ model Wallet {
 }
 
 model Transaction {
-  id          String   @id @default(cuid())
+  id          String   @id @default(uuid())
   walletId    String
   amount      Decimal  @db.Decimal(10, 4)
   balance     Decimal  @db.Decimal(10, 4)
