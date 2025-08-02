@@ -1,0 +1,31 @@
+import { IsNumber, IsString, IsNotEmpty, Min, Max } from 'class-validator';
+import { Transform } from 'class-transformer';
+
+export class CreateTransactionDto {
+  @IsNumber()
+  @Min(-999999.9999)
+  @Max(999999.9999)
+  @Transform(({ value }) => parseFloat(value))
+  amount: number;
+
+  @IsString()
+  @IsNotEmpty()
+  description: string;
+}
+
+export class TransactionsQueryDto {
+  @IsString()
+  @IsNotEmpty()
+  walletId: string;
+
+  @IsNumber()
+  @Min(0)
+  @Transform(({ value }) => parseInt(value) || 0)
+  skip?: number = 0;
+
+  @IsNumber()
+  @Min(1)
+  @Max(100)
+  @Transform(({ value }) => parseInt(value) || 10)
+  limit?: number = 10;
+} 
