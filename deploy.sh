@@ -4,6 +4,10 @@ set -e
 echo "Installing dependencies..."
 npm install
 
+npm install -g @nestjs/cli
+
+nest --version
+
 echo "Generating Prisma client..."
 npm run prisma:generate
 
