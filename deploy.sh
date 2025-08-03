@@ -11,4 +11,4 @@ echo "Applying database migrations..."
 npm run prisma:migrate:deploy
 
 echo "Building the app..."
-npm run build
+npm run build   
