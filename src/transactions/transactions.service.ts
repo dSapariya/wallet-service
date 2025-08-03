@@ -57,7 +57,7 @@ export class TransactionsService {
   }
 
   async getTransactions(query: TransactionsQueryDto) {
-    const { walletId, skip, limit } = query;
+    const { walletId, skip, limit, sortBy, order } = query;
 
     // check if wallet exists 
     const wallet = await this.prisma.wallet.findUnique({
@@ -68,23 +68,43 @@ export class TransactionsService {
       throw new NotFoundException(`Wallet with ID ${walletId} not found`);
     }
 
-    // Get transactions with pagination
+    // Determine sorting order based on sortBy and order parameters
+    let orderBy: any = { createdAt: 'desc' }; // default sorting
+
+    switch (sortBy) {
+      case 'amount':
+        orderBy = { amount: order };
+        break;
+      case 'date':
+        orderBy = { createdAt: order };
+        break;
+      default:
+        orderBy = { createdAt: 'desc' };
+    }
+
+    // Get total count for pagination
+    const total = await this.prisma.transaction.count({ where: { walletId } });
+
+    // Get transactions with pagination and sorting
     const transactions = await this.prisma.transaction.findMany({
       where: { walletId },
-      orderBy: { createdAt: 'desc' },
+      orderBy,
       skip,
       take: limit,
     });
 
-    return transactions.map((transaction) => ({
-      id: transaction.id,
-      walletId: transaction.walletId,
-      amount: parseFloat(transaction.amount.toString()),
-      balance: parseFloat(transaction.balance.toString()),
-      description: transaction.description,
-      date: transaction.createdAt,
-      type: transaction.type,
-    }));
+    return {
+      total,
+      transactions: transactions.map((transaction) => ({
+        id: transaction.id,
+        walletId: transaction.walletId,
+        amount: parseFloat(transaction.amount.toString()),
+        balance: parseFloat(transaction.balance.toString()),
+        description: transaction.description,
+        date: transaction.createdAt,
+        type: transaction.type,
+      })),
+    };
   }
 
   async getTransactionById(id: string) {
@@ -116,9 +136,26 @@ export class TransactionsService {
     };
   }
 
-  async getAllTransactions(skip = 0, limit = 10) {
+  async getAllTransactions(skip = 0, limit = 10, sortBy = 'date', order = 'desc') {
+    
+    let orderBy: any = { createdAt: 'desc' }; 
+
+    switch (sortBy) {
+      case 'amount':
+        orderBy = { amount: order };
+        break;
+      case 'date':
+        orderBy = { createdAt: order };
+        break;
+      default:
+        orderBy = { createdAt: 'desc' };
+    }
+
+    // Get total count for pagination
+    const total = await this.prisma.transaction.count();
+
     const transactions = await this.prisma.transaction.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy,
       skip,
       take: limit,
       include: {
@@ -131,15 +168,18 @@ export class TransactionsService {
       },
     });
 
-    return transactions.map((transaction) => ({
-      id: transaction.id,
-      walletId: transaction.walletId,
-      amount: parseFloat(transaction.amount.toString()),
-      balance: parseFloat(transaction.balance.toString()),
-      description: transaction.description,
-      date: transaction.createdAt,
-      type: transaction.type,
-      wallet: transaction.wallet,
-    }));
+    return {
+      total,
+      transactions: transactions.map((transaction) => ({
+        id: transaction.id,
+        walletId: transaction.walletId,
+        amount: parseFloat(transaction.amount.toString()),
+        balance: parseFloat(transaction.balance.toString()),
+        description: transaction.description,
+        date: transaction.createdAt,
+        type: transaction.type,
+        wallet: transaction.wallet,
+      })),
+    };
   }
 } 

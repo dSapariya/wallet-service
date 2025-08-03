@@ -53,7 +53,7 @@ export const ApiGetTransactions = () =>
   applyDecorators(
     ApiOperation({ 
       summary: 'Get paginated list of transactions for a wallet',
-      description: 'Retrieves a paginated list of transactions for the specified wallet, ordered by most recent first.'
+      description: 'Retrieves a paginated list of transactions for the specified wallet with optional sorting by amount or date.'
     }),
     ApiQuery({
       name: 'walletId',
@@ -71,6 +71,20 @@ export const ApiGetTransactions = () =>
       description: 'Maximum number of records to fetch (max 100)',
       required: false,
       example: 25,
+    }),
+    ApiQuery({
+      name: 'sortBy',
+      description: 'Field to sort by: amount or date (default: date)',
+      required: false,
+      example: 'amount',
+      enum: ['amount', 'date'],
+    }),
+    ApiQuery({
+      name: 'order',
+      description: 'Sort order: asc or desc (default: desc)',
+      required: false,
+      example: 'desc',
+      enum: ['asc', 'desc'],
     }),
     ApiResponse({
       status: HttpStatus.OK,
@@ -108,7 +122,7 @@ export const ApiGetAllTransactions = () =>
   applyDecorators(
     ApiOperation({ 
       summary: 'Get all transactions',
-      description: 'Retrieves a paginated list of all transactions in the system, ordered by most recent first.'
+      description: 'Retrieves a paginated list of all transactions in the system with optional sorting by amount or date.'
     }),
     ApiQuery({
       name: 'skip',
@@ -121,6 +135,20 @@ export const ApiGetAllTransactions = () =>
       description: 'Maximum number of records to fetch (max 100)',
       required: false,
       example: 10,
+    }),
+    ApiQuery({
+      name: 'sortBy',
+      description: 'Field to sort by: amount or date (default: date)',
+      required: false,
+      example: 'amount',
+      enum: ['amount', 'date'],
+    }),
+    ApiQuery({
+      name: 'order',
+      description: 'Sort order: asc or desc (default: desc)',
+      required: false,
+      example: 'desc',
+      enum: ['asc', 'desc'],
     }),
     ApiResponse({
       status: HttpStatus.OK,

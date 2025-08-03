@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty,IsNumber } from 'class-validator';
 
 export class CreateWalletDto {
   @IsString()
@@ -7,9 +7,9 @@ export class CreateWalletDto {
 }
 
 export class SetupWalletDto {
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  balance: string;
+  balance: number;
 
   @IsString()
   @IsNotEmpty()

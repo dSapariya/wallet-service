@@ -41,8 +41,10 @@ export class TransactionsController {
   async getAllTransactions(
     @Query('skip') skip?: number,
     @Query('limit') limit?: number,
+    @Query('sortBy') sortBy?: string,
+    @Query('order') order?: string,
   ) {
-    return this.transactionsService.getAllTransactions(skip || 0, limit || 10);
+    return this.transactionsService.getAllTransactions(skip || 0, limit || 10, sortBy || 'date', order || 'desc');
   }
 
   @Get('transaction/:id')

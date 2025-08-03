@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsNotEmpty, Min, Max } from 'class-validator';
+import { IsNumber, IsString, IsNotEmpty, Min, Max, IsOptional, IsIn } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class CreateTransactionDto {
@@ -28,4 +28,14 @@ export class TransactionsQueryDto {
   @Max(100)
   @Transform(({ value }) => parseInt(value) || 10)
   limit?: number = 10;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['amount', 'date'])
+  sortBy?: string = 'date';
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['asc', 'desc'])
+  order?: string = 'desc';
 } 
