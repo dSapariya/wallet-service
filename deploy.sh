@@ -12,7 +12,8 @@ echo "Generating Prisma client..."
 npm run prisma:generate
 
 echo "Applying database migrations..."
-npm run prisma:migrate:deploy
+npx prisma migrate reset --force --skip-seed --skip-generate
+# npm run prisma:migrate:deploy
 
 export PORT=3000
 

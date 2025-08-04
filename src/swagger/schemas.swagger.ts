@@ -53,7 +53,7 @@ export class SetupWalletDtoSchema {
     example: 20.5612, 
     description: 'Initial wallet balance (up to 4 decimal places)' 
   })
-  balance: string;
+  balance: number;
 
   @ApiProperty({ 
     example: 'Hello world', 
