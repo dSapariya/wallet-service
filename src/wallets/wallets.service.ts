@@ -59,35 +59,4 @@ export class WalletsService {
     };
   }
 
-  async getAllWallets() {
-    const wallets = await this.prisma.wallet.findMany({
-      select: {
-        id: true,
-        name: true,
-        balance: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
-
-    return wallets.map((wallet) => ({
-      ...wallet,
-      balance: parseFloat(wallet.balance.toString()),
-    }));
-  }
-
-  async updateWalletBalance(id: string, newBalance: number) {
-    const wallet = await this.prisma.wallet.findUnique({
-      where: { id },
-    });
-
-    if (!wallet) {
-      throw new NotFoundException(`Wallet with ID ${id} not found`);
-    }
-
-    return this.prisma.wallet.update({
-      where: { id },
-      data: { balance: new Decimal(newBalance) },
-    });
-  }
 }
