@@ -1,14 +1,14 @@
-# Dev HighLevel Backend - Wallet Service
+# Wallet Service
 
 A NestJS backend application with a complete wallet system including transactions, built with Prisma ORM and PostgreSQL database.
 
-## Features
+## Production URL
+
+The live application can be accessed at: [https://wallet-service-7ceb.onrender.com](https://wallet-service-7ceb.onrender.com)
+
+## Technologies Used
 
 - 🚀 **NestJS Framework** - Modern, scalable Node.js framework
-- 💰 **Wallet System**
-  - **Initialize New Wallet**: Create a new wallet with an initial balance.
-  - **Credit/Debit Transactions**: Perform credit and debit transactions on a wallet.
-  - **Transaction History**: Retrieve paginated transaction history for a wallet, with sorting options.
 - 🗄️ **Prisma ORM** - Type-safe database client with PostgreSQL
 - 📚 **Swagger Documentation** - Auto-generated API documentation
 - ✅ **Validation** - Request validation with class-validator
@@ -16,9 +16,20 @@ A NestJS backend application with a complete wallet system including transaction
 - ⚙️ **Configuration Management** - Environment-based configuration
 - 🔒 **Concurrency Handling** - Race condition prevention for transactions
 
-## Production URL
+## Features
+- 💰 **Wallet System**
+  - **Initialize New Wallet**: Create a new wallet with an initial balance.
+  - **Credit/Debit Transactions**: Perform credit and debit transactions on a wallet.
+  - **Transaction History**: Retrieve paginated transaction history for a wallet, with sorting options.
 
-The live application can be accessed at: [https://wallet-service-7ceb.onrender.com](https://wallet-service-7ceb.onrender.com)
+### Key Features Implemented
+1. **Precision Handling**: All monetary values use 4 decimal precision
+2. **Concurrency Control**: Database transactions prevent race conditions
+3. **Input Validation**: Comprehensive validation for all inputs
+4. **Error Handling**: Proper error responses for various scenarios
+5. **Pagination**: Efficient pagination for transaction lists
+6. **Type Safety**: Full TypeScript support with Prisma
+
 
 ## Prerequisites
 
@@ -26,7 +37,8 @@ The live application can be accessed at: [https://wallet-service-7ceb.onrender.c
 - npm or yarn package manager
 - PostgreSQL database
 
-## Installation
+## Project Setup
+To set up and run the project locally, follow these steps:
 
 1. **Clone the repository**
    ```bash
@@ -81,6 +93,10 @@ The live application can be accessed at: [https://wallet-service-7ceb.onrender.c
    npm run deploy
    npm run start:prod
    ```
+
+## API Documentation
+
+Once the application is running, you can access the Swagger documentation at: [https://wallet-service-7ceb.onrender.com/api/docs](https://wallet-service-7ceb.onrender.com/api/docs)
 
 ## API Endpoints
 
@@ -249,13 +265,6 @@ The application includes two main models:
 - `createdAt` (DateTime) - Transaction timestamp
 - `wallet` (Wallet) - Wallet relationship
 
-## API Documentation
-
-Once the application is running, you can access the Swagger documentation at:
-```
-https://wallet-service-7ceb.onrender.com/api
-```
-
 ## Available Scripts
 
 - `npm run start:dev` - Start development server with hot reload
@@ -270,48 +279,36 @@ https://wallet-service-7ceb.onrender.com/api
 
 ```
 src/
-├── wallets/
+├── wallets/                                # Wallet module
 │   ├── dto/
-│   │   └── wallet.dto.ts
-│   ├── wallets.controller.ts
-│   ├── wallets.service.ts
-│   └── wallets.module.ts
-├── transactions/
+│   │   └── wallet.dto.ts                   # Data Transfer Objects
+│   ├── wallets.controller.ts               # Handles wallet API requests
+│   ├── wallets.controller.spec.ts          # Unit tests for wallet controller
+│   ├── wallets.service.ts                  # Business logic for wallets
+│   └── wallets.module.ts                   # Module for wallets
+├── transactions/                           # Transaction module
 │   ├── dto/
-│   │   └── transaction.dto.ts
-│   ├── transactions.controller.ts
-│   ├── transactions.service.ts
-│   └── transactions.module.ts
-├── prisma/
-│   ├── prisma.service.ts
-│   └── prisma.module.ts
-├── app.controller.ts
-├── app.service.ts
-├── app.module.ts
-└── main.ts
+│   │   └── transaction.dto.ts              # Data Transfer Objects
+│   ├── transactions.controller.ts          # Handles transaction API requests
+│   ├── transactions.controller.spec.ts     # Unit tests for transaction controller
+│   ├── transactions.service.ts             # Business logic for transactions
+│   ├── transactions.service.spec.ts        # Unit tests for transaction service
+│   └── transactions.module.ts              # Module for transactions
+├── prisma/                                 # Prisma ORM integration
+│   ├── prisma.service.ts                   # Prisma client service
+│   └── prisma.module.ts                    # NestJS module for Prisma
+├── app.controller.ts                       # Main application controller
+├── app.controller.spec.ts                  # Unit tests for main application controller
+├── app.service.ts                          # Main application service
+├── app.module.ts                           # Main application module
+└── main.ts                                 # Application entry point
 
-prisma/
-├── schema.prisma
-└── seed.ts
-```
+prisma/                                     # Prisma schema and migrations
+├── schema.prisma                           # Database schema definition
+└── seed.ts                                 # Database seeding script
 
-## Development
-
-### Key Features Implemented
-
-1. **Precision Handling**: All monetary values use 4 decimal precision
-2. **Concurrency Control**: Database transactions prevent race conditions
-3. **Input Validation**: Comprehensive validation for all inputs
-4. **Error Handling**: Proper error responses for various scenarios
-5. **Pagination**: Efficient pagination for transaction lists
-6. **Type Safety**: Full TypeScript support with Prisma
-
-## Testing
-
-```bash
-# Unit tests
-npm run test
-
-# E2E tests
-npm run test:e2e
+test/                                       # End-to-End (E2E) tests
+├── wallets.e2e-spec.ts                     # E2E tests for wallet module
+├── transactions.e2e-spec.ts                # E2E tests for transaction module
+└── jest-e2e.json                           # Jest configuration
 ```

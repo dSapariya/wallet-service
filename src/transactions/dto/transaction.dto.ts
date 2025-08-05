@@ -7,6 +7,8 @@ import {
   IsOptional,
   IsBoolean,
   IsIn,
+  NotEquals,
+  IsInt
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 
@@ -14,6 +16,7 @@ export class CreateTransactionDto {
   @IsNumber()
   @Min(-999999.9999)
   @Max(999999.9999)
+  @NotEquals(0, { message: 'Transaction amount cannot be zero.' })
   @Transform(({ value }) => parseFloat(value))
   amount: number;
 
@@ -28,15 +31,20 @@ export class TransactionsQueryDto {
   walletId: string;
 
   @IsNumber()
+  @IsOptional()
+  @IsInt()
   @Min(0)
-  @Transform(({ value }) => parseInt(value) || 0)
+  @Transform(({ value }) => (value === null || value === undefined || value === '' ? undefined : parseInt(value)))
   skip?: number = 0;
 
   @IsNumber()
+  @IsOptional()
+  @IsInt()
   @Min(1)
   @Max(100)
-  @Transform(({ value }) => parseInt(value) || 10)
+  @Transform(({ value }) => (value === null || value === undefined || value === '' ? undefined : parseInt(value)))
   limit?: number = 10;
+
 
   @IsOptional()
   @IsString()
