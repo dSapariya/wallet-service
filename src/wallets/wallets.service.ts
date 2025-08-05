@@ -90,4 +90,4 @@ export class WalletsService {
       data: { balance: new Decimal(newBalance) },
     });
   }
-} 
+}

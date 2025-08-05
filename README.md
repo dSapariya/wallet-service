@@ -1,4 +1,4 @@
-# Dev HighLevel Backend - Wallet System
+# Dev HighLevel Backend - Wallet Service
 
 A NestJS backend application with a complete wallet system including transactions, built with Prisma ORM and PostgreSQL database.
 
@@ -88,7 +88,7 @@ A NestJS backend application with a complete wallet system including transaction
     -H "Content-Type: application/json" \
     -d '{
       "balance": 20.5612,
-      "name": "Hello world"
+      "name": "Dixa"
     }'
   ```
 - **Request Body**:
@@ -164,61 +164,40 @@ A NestJS backend application with a complete wallet system including transaction
   - `limit` (optional): Maximum records to fetch (default: 10, max: 100)
   - `sortBy` (optional): Field to sort by - amount or date (default: date)
   - `order` (optional): Sort order - asc or desc (default: desc)
+  - `exportAll` (optional): If true, returns all transactions ignoring `skip` and `limit` (default: `false`)
 - **cURL Example**:
   ```bash
-  # curl call 
-  curl -X GET "http://localhost:3000/transactions?walletId=061f4771-f96a-4e65-b798-4e6031215567&skip=0&limit=10"
-
-  ```
-- **Response**:
-  ```json
+  # Sort by amount (highest first)
+  curl -X GET "http://localhost:3000/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&skip=0&limit=10&sortBy=amount&order=desc"
   
-    "total": 2,
-    "transactions": [
-        {
-            "id": "3a5095de-b6b8-4951-a66a-3cf1f1d9a95a",
-            "walletId": "061f4771-f96a-4e65-b798-4e6031215567",
-            "amount": 10,
-            "balance": 30.5612,
-            "description": "Recharge",
-            "date": "2025-08-04T03:58:16.694Z",
-            "type": "CREDIT"
-        },
-        {
-            "id": "be41cd6f-9a9f-4eb0-b30c-422966accecd",
-            "walletId": "061f4771-f96a-4e65-b798-4e6031215567",
-            "amount": 20.5612,
-            "balance": 20.5612,
-            "description": "Initial wallet setup",
-            "date": "2025-08-04T03:56:41.686Z",
-            "type": "CREDIT"
-        }
-    ]
-    ```
+  # Sort by amount (lowest first)
+  curl -X GET "http://localhost:3000/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&skip=0&limit=10&sortBy=amount&order=asc"
+  
+  # Sort by date (newest first)
+  curl -X GET "http://localhost:3000/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&skip=0&limit=10&sortBy=date&order=desc"
+  
+  # Sort by date (oldest first)
+  curl -X GET "http://localhost:3000/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&skip=0&limit=10&sortBy=date&order=asc"
 
-#### 3. Get Transaction by ID
-- **GET** `/transactions/transaction/:id`
-- **Purpose**: Retrieve specific transaction details
-- **cURL Example**:
-  ```bash
-  curl -X GET http://localhost:3000/transaction/3a5095de-b6b8-4951-a66a-3cf1f1d9a95a
+  # Export all transactions
+  curl -X GET "http://localhost:3000/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&exportAll=true"
   ```
 - **Response**:
   ```json
   {
-    "id": "3a5095de-b6b8-4951-a66a-3cf1f1d9a95a",
-    "walletId": "061f4771-f96a-4e65-b798-4e6031215567",
-    "amount": 10,
-    "balance": 30.5612,
-    "description": "Recharge",
-    "date": "2025-08-04T03:58:16.694Z",
-    "type": "CREDIT",
-    "wallet": {
-        "id": "061f4771-f96a-4e65-b798-4e6031215567",
-        "name": "Dixa"
-    }
-   }
-  
+    "total": 1,
+    "transactions": [
+      {
+        "id": "987fcdeb-51a2-43d1-b789-123456789abc",
+        "walletId": "123e4567-e89b-12d3-a456-426614174000",
+        "amount": 2.4,
+        "balance": 12.4,
+        "description": "Recharge",
+        "date": "2025-08-02T00:00:00.000Z",
+        "type": "CREDIT"
+      }
+    ]
+  }
   ```
 
 ### Health Check

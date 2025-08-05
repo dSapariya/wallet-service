@@ -38,7 +38,15 @@ describe('TransactionsService', () => {
   it('should create a transaction and update wallet', async () => {
     const wallet = { id: '1', balance: 100 };
     const updatedWallet = { id: '1', balance: 150 };
-    const transaction = { id: 't1', walletId: '1', amount: 50, balance: 150, description: 'Test', type: 'CREDIT', createdAt: new Date() };
+    const transaction = {
+      id: 't1',
+      walletId: '1',
+      amount: 50,
+      balance: 150,
+      description: 'Test',
+      type: 'CREDIT',
+      createdAt: new Date(),
+    };
     mockPrismaService.wallet.findUnique.mockResolvedValue(wallet);
     mockPrismaService.wallet.update.mockResolvedValue(updatedWallet);
     mockPrismaService.transaction.create.mockResolvedValue(transaction);
@@ -51,25 +59,161 @@ describe('TransactionsService', () => {
   it('should throw NotFoundException if wallet not found', async () => {
     mockPrismaService.wallet.findUnique.mockResolvedValue(null);
     const dto = { amount: 50, description: 'Test' };
-    await expect(service.createTransaction('notfound', dto)).rejects.toThrow(NotFoundException);
+    await expect(service.createTransaction('notfound', dto)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should throw BadRequestException if insufficient balance', async () => {
     const wallet = { id: '1', balance: 10 };
     mockPrismaService.wallet.findUnique.mockResolvedValue(wallet);
     const dto = { amount: -20, description: 'Test' };
-    await expect(service.createTransaction('1', dto)).rejects.toThrow(BadRequestException);
+    await expect(service.createTransaction('1', dto)).rejects.toThrow(
+      BadRequestException,
+    );
   });
 
   it('should get paginated transactions and total count', async () => {
-    mockPrismaService.wallet.findUnique.mockResolvedValue({ id: '1', balance: 100 });
+    mockPrismaService.wallet.findUnique.mockResolvedValue({
+      id: '1',
+      balance: 100,
+    });
     mockPrismaService.transaction.count.mockResolvedValue(2);
     mockPrismaService.transaction.findMany.mockResolvedValue([
-      { id: 't1', walletId: '1', amount: 10, balance: 110, description: 'A', createdAt: new Date(), type: 'CREDIT' },
-      { id: 't2', walletId: '1', amount: -5, balance: 105, description: 'B', createdAt: new Date(), type: 'DEBIT' },
+      {
+        id: 't1',
+        walletId: '1',
+        amount: 10,
+        balance: 110,
+        description: 'A',
+        createdAt: new Date(),
+        type: 'CREDIT',
+      },
+      {
+        id: 't2',
+        walletId: '1',
+        amount: -5,
+        balance: 105,
+        description: 'B',
+        createdAt: new Date(),
+        type: 'DEBIT',
+      },
     ]);
-    const result = await service.getTransactions({ walletId: '1', skip: 0, limit: 2, sortBy: 'date', order: 'desc' });
+    const result = await service.getTransactions({
+      walletId: '1',
+      skip: 0,
+      limit: 2,
+      sortBy: 'date',
+      order: 'desc',
+    });
     expect(result.total).toBe(2);
     expect(result.transactions.length).toBe(2);
   });
-}); 
+
+  it('should get all transactions when exportAll is true', async () => {
+    mockPrismaService.wallet.findUnique.mockResolvedValue({
+      id: '1',
+      balance: 100,
+    });
+    mockPrismaService.transaction.count.mockResolvedValue(5);
+    mockPrismaService.transaction.findMany.mockResolvedValue([
+      {
+        id: 't1',
+        walletId: '1',
+        amount: 10,
+        balance: 110,
+        description: 'A',
+        createdAt: new Date(),
+        type: 'CREDIT',
+      },
+      {
+        id: 't2',
+        walletId: '1',
+        amount: -5,
+        balance: 105,
+        description: 'B',
+        createdAt: new Date(),
+        type: 'DEBIT',
+      },
+      {
+        id: 't3',
+        walletId: '1',
+        amount: 20,
+        balance: 125,
+        description: 'C',
+        createdAt: new Date(),
+        type: 'CREDIT',
+      },
+      {
+        id: 't4',
+        walletId: '1',
+        amount: -15,
+        balance: 110,
+        description: 'D',
+        createdAt: new Date(),
+        type: 'DEBIT',
+      },
+      {
+        id: 't5',
+        walletId: '1',
+        amount: 5,
+        balance: 115,
+        description: 'E',
+        createdAt: new Date(),
+        type: 'CREDIT',
+      },
+    ]);
+    const result = await service.getTransactions({
+      walletId: '1',
+      exportAll: true,
+    });
+    expect(result.total).toBe(5);
+    expect(result.transactions.length).toBe(5);
+  });
+
+  it('should sort transactions by amount in ascending order', async () => {
+    mockPrismaService.wallet.findUnique.mockResolvedValue({
+      id: '1',
+      balance: 100,
+    });
+    mockPrismaService.transaction.count.mockResolvedValue(3);
+    mockPrismaService.transaction.findMany.mockResolvedValue([
+      {
+        id: 't2',
+        walletId: '1',
+        amount: -5,
+        balance: 105,
+        description: 'B',
+        createdAt: new Date(),
+        type: 'DEBIT',
+      },
+      {
+        id: 't1',
+        walletId: '1',
+        amount: 10,
+        balance: 110,
+        description: 'A',
+        createdAt: new Date(),
+        type: 'CREDIT',
+      },
+      {
+        id: 't3',
+        walletId: '1',
+        amount: 20,
+        balance: 125,
+        description: 'C',
+        createdAt: new Date(),
+        type: 'CREDIT',
+      },
+    ]);
+    const result = await service.getTransactions({
+      walletId: '1',
+      sortBy: 'amount',
+      order: 'asc',
+    });
+    expect(result.transactions.length).toBe(3);
+    expect(result.transactions[0].amount).toBe(-5);
+    expect(result.transactions[1].amount).toBe(10);
+    expect(result.transactions[2].amount).toBe(20);
+  });
+});

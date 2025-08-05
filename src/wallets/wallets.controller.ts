@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Post,
-  Get,
-  Body,
-  Param,
-} from '@nestjs/common';
+import { Controller, Post, Get, Body, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { WalletsService } from './wallets.service';
 import { SetupWalletDto } from './dto/wallet.dto';
@@ -26,4 +20,4 @@ export class WalletsController {
   async getWallet(@Param('id') id: string) {
     return this.walletsService.getWallet(id);
   }
-} 
+}

@@ -33,9 +33,22 @@ describe('WalletsService', () => {
   });
 
   it('should create a wallet and initial transaction', async () => {
-    const dto = { balance: 100.00, name: 'Test Wallet' };
-    const wallet = { id: '1', name: 'Test Wallet', balance: 100, createdAt: new Date() };
-    const transaction = { id: 't1', walletId: '1', amount: 100, balance: 100, description: 'Initial wallet setup', type: 'CREDIT', createdAt: new Date() };
+    const dto = { balance: 100.0, name: 'Test Wallet' };
+    const wallet = {
+      id: '1',
+      name: 'Test Wallet',
+      balance: 100,
+      createdAt: new Date(),
+    };
+    const transaction = {
+      id: 't1',
+      walletId: '1',
+      amount: 100,
+      balance: 100,
+      description: 'Initial wallet setup',
+      type: 'CREDIT',
+      createdAt: new Date(),
+    };
     mockPrismaService.wallet.create.mockResolvedValue(wallet);
     mockPrismaService.transaction.create.mockResolvedValue(transaction);
     const result = await service.setupWallet(dto);
@@ -45,7 +58,12 @@ describe('WalletsService', () => {
   });
 
   it('should get a wallet by id', async () => {
-    const wallet = { id: '1', name: 'Test Wallet', balance: 100, createdAt: new Date() };
+    const wallet = {
+      id: '1',
+      name: 'Test Wallet',
+      balance: 100,
+      createdAt: new Date(),
+    };
     mockPrismaService.wallet.findUnique.mockResolvedValue(wallet);
     const result = await service.getWallet('1');
     expect(result.id).toBe('1');
@@ -54,6 +72,8 @@ describe('WalletsService', () => {
 
   it('should throw NotFoundException if wallet not found', async () => {
     mockPrismaService.wallet.findUnique.mockResolvedValue(null);
-    await expect(service.getWallet('notfound')).rejects.toThrow(NotFoundException);
+    await expect(service.getWallet('notfound')).rejects.toThrow(
+      NotFoundException,
+    );
   });
-}); 
+});

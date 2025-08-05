@@ -5,9 +5,10 @@ import { SetupWalletDtoSchema } from './schemas.swagger';
 
 export const ApiSetupWallet = () =>
   applyDecorators(
-    ApiOperation({ 
+    ApiOperation({
       summary: 'Setup a new wallet with initial balance',
-      description: 'Creates a new wallet with the specified name and initial balance. The balance can have up to 4 decimal places of precision.'
+      description:
+        'Creates a new wallet with the specified name and initial balance. The balance can have up to 4 decimal places of precision.',
     }),
     ApiBody({ type: SetupWalletDtoSchema }),
     ApiResponse({
@@ -25,22 +26,27 @@ export const ApiSetupWallet = () =>
     }),
     ApiResponse({
       status: HttpStatus.BAD_REQUEST,
-      description: 'Invalid input data - balance must be positive and name is required',
+      description:
+        'Invalid input data - balance must be positive and name is required',
       schema: {
         example: {
           statusCode: 400,
-          message: ['balance must be a positive number', 'name should not be empty'],
-          error: 'Bad Request'
-        }
-      }
-    })
+          message: [
+            'balance must be a positive number',
+            'name should not be empty',
+          ],
+          error: 'Bad Request',
+        },
+      },
+    }),
   );
 
 export const ApiGetWallet = () =>
   applyDecorators(
-    ApiOperation({ 
+    ApiOperation({
       summary: 'Get wallet details by ID',
-      description: 'Retrieves the wallet information including current balance, name, and creation date.'
+      description:
+        'Retrieves the wallet information including current balance, name, and creation date.',
     }),
     ApiParam({
       name: 'id',
@@ -66,8 +72,8 @@ export const ApiGetWallet = () =>
         example: {
           statusCode: 404,
           message: 'Wallet with ID 1243434 not found',
-          error: 'Not Found'
-        }
-      }
-    })
-  ); 
+          error: 'Not Found',
+        },
+      },
+    }),
+  );

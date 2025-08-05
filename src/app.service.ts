@@ -12,4 +12,4 @@ export class AppService {
       timestamp: new Date().toISOString(),
     };
   }
-} 
+}

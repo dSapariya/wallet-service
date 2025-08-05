@@ -1,4 +1,13 @@
-import { IsNumber, IsString, IsNotEmpty, Min, Max, IsOptional, IsIn } from 'class-validator';
+import {
+  IsNumber,
+  IsString,
+  IsNotEmpty,
+  Min,
+  Max,
+  IsOptional,
+  IsBoolean,
+  IsIn,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class CreateTransactionDto {
@@ -38,4 +47,9 @@ export class TransactionsQueryDto {
   @IsString()
   @IsIn(['asc', 'desc'])
   order?: string = 'desc';
-} 
+
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }) => value === 'true' || value === true) // Transform string 'true' to boolean true
+  exportAll?: boolean = false;
+}
