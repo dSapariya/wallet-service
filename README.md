@@ -5,13 +5,20 @@ A NestJS backend application with a complete wallet system including transaction
 ## Features
 
 - 🚀 **NestJS Framework** - Modern, scalable Node.js framework
-- 💰 **Wallet System** - wallet management with transactions
+- 💰 **Wallet System**
+  - **Initialize New Wallet**: Create a new wallet with an initial balance.
+  - **Credit/Debit Transactions**: Perform credit and debit transactions on a wallet.
+  - **Transaction History**: Retrieve paginated transaction history for a wallet, with sorting options.
 - 🗄️ **Prisma ORM** - Type-safe database client with PostgreSQL
 - 📚 **Swagger Documentation** - Auto-generated API documentation
 - ✅ **Validation** - Request validation with class-validator
-- 🧪 **Testing Setup** - Jest testing framework configured
+- 🧪 **Testing Setup** - Jest testing framework configured (Unit & E2E)
 - ⚙️ **Configuration Management** - Environment-based configuration
 - 🔒 **Concurrency Handling** - Race condition prevention for transactions
+
+## Production URL
+
+The live application can be accessed at: [https://wallet-service-7ceb.onrender.com](https://wallet-service-7ceb.onrender.com)
 
 ## Prerequisites
 
@@ -84,7 +91,7 @@ A NestJS backend application with a complete wallet system including transaction
 - **Purpose**: Initialize a new wallet with initial balance
 - **cURL Example**:
   ```bash
-  curl -X POST http://localhost:3000/setup \
+  curl -X POST https://wallet-service-7ceb.onrender.com/setup \
     -H "Content-Type: application/json" \
     -d '{
       "balance": 20.5612,
@@ -114,7 +121,7 @@ A NestJS backend application with a complete wallet system including transaction
 - **Purpose**: Retrieve specific wallet information
 - **cURL Example**:
   ```bash
-  curl -X GET http://localhost:3000/wallet/061f4771-f96a-4e65-b798-4e6031215567
+  curl -X GET https://wallet-service-7ceb.onrender.com/wallet/061f4771-f96a-4e65-b798-4e6031215567
   ```
 - **Response**:
   ```json
@@ -133,7 +140,7 @@ A NestJS backend application with a complete wallet system including transaction
 - **Purpose**: Credit or Debit transaction on a wallet
 - **cURL Example**:
   ```bash
-  curl -X POST http://localhost:3000/transact/061f4771-f96a-4e65-b798-4e6031215567 \
+  curl -X POST https://wallet-service-7ceb.onrender.com/transact/061f4771-f96a-4e65-b798-4e6031215567 \
     -H "Content-Type: application/json" \
     -d '{
       "amount": 10,
@@ -168,19 +175,19 @@ A NestJS backend application with a complete wallet system including transaction
 - **cURL Example**:
   ```bash
   # Sort by amount (highest first)
-  curl -X GET "http://localhost:3000/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&skip=0&limit=10&sortBy=amount&order=desc"
+  curl -X GET "https://wallet-service-7ceb.onrender.com/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&skip=0&limit=10&sortBy=amount&order=desc"
   
   # Sort by amount (lowest first)
-  curl -X GET "http://localhost:3000/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&skip=0&limit=10&sortBy=amount&order=asc"
+  curl -X GET "https://wallet-service-7ceb.onrender.com/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&skip=0&limit=10&sortBy=amount&order=asc"
   
   # Sort by date (newest first)
-  curl -X GET "http://localhost:3000/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&skip=0&limit=10&sortBy=date&order=desc"
+  curl -X GET "https://wallet-service-7ceb.onrender.com/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&skip=0&limit=10&sortBy=date&order=desc"
   
   # Sort by date (oldest first)
-  curl -X GET "http://localhost:3000/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&skip=0&limit=10&sortBy=date&order=asc"
+  curl -X GET "https://wallet-service-7ceb.onrender.com/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&skip=0&limit=10&sortBy=date&order=asc"
 
   # Export all transactions
-  curl -X GET "http://localhost:3000/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&exportAll=true"
+  curl -X GET "https://wallet-service-7ceb.onrender.com/transactions?walletId=123e4567-e89b-12d3-a456-426614174000&exportAll=true"
   ```
 - **Response**:
   ```json
@@ -203,11 +210,11 @@ A NestJS backend application with a complete wallet system including transaction
 ### Health Check
 - **GET** `/` - Application status
   ```bash
-  curl -X GET http://localhost:3000/
+  curl -X GET https://wallet-service-7ceb.onrender.com/
   ```
 - **GET** `/health` - Health check endpoint
   ```bash
-  curl -X GET http://localhost:3000/health
+  curl -X GET https://wallet-service-7ceb.onrender.com/health
   ```
 
 ## Database Management
@@ -217,8 +224,8 @@ A NestJS backend application with a complete wallet system including transaction
 - `npm run prisma:generate` - Generate Prisma client
 - `npm run prisma:migrate` - Create and apply migrations
 - `npm run prisma:migrate:deploy` - Deploy migrations to production
-- `npm run prisma:studio` - Open Prisma Studio (database GUI)
 - `npm run prisma:seed` - Seed database with initial data
+- `npm run prisma:studio` - Open Prisma Studio (database GUI)
 
 ### Database Schema
 
@@ -246,7 +253,7 @@ The application includes two main models:
 
 Once the application is running, you can access the Swagger documentation at:
 ```
-http://localhost:3000/api
+https://wallet-service-7ceb.onrender.com/api
 ```
 
 ## Available Scripts
@@ -308,7 +315,3 @@ npm run test
 # E2E tests
 npm run test:e2e
 ```
-
-## License
-
-This project is licensed under the MIT License.
