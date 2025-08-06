@@ -6,6 +6,8 @@ A NestJS backend application with a complete wallet system including transaction
 
 The live service URL can be accessed at: [https://wallet-service-7ceb.onrender.com](https://wallet-service-7ceb.onrender.com).
 
+You can watch a walkthrough of the project here : https://www.loom.com/share/9b1ec2aa7bab45ddbb333cc45f5176d2?sid=99889032-b8b7-4826-9a8e-6c70308789ee
+
 Note: This application is hosted on a free hosting service, so it may take 1–2 minutes to load the first time.
 
 ## Technologies Used
