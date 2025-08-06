@@ -8,7 +8,7 @@ import {
   IsBoolean,
   IsIn,
   NotEquals,
-  IsInt
+  IsInt,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 
@@ -34,7 +34,11 @@ export class TransactionsQueryDto {
   @IsOptional()
   @IsInt()
   @Min(0)
-  @Transform(({ value }) => (value === null || value === undefined || value === '' ? undefined : parseInt(value)))
+  @Transform(({ value }) =>
+    value === null || value === undefined || value === ''
+      ? undefined
+      : parseInt(value),
+  )
   skip?: number = 0;
 
   @IsNumber()
@@ -42,9 +46,12 @@ export class TransactionsQueryDto {
   @IsInt()
   @Min(1)
   @Max(100)
-  @Transform(({ value }) => (value === null || value === undefined || value === '' ? undefined : parseInt(value)))
+  @Transform(({ value }) =>
+    value === null || value === undefined || value === ''
+      ? undefined
+      : parseInt(value),
+  )
   limit?: number = 10;
-
 
   @IsOptional()
   @IsString()
