@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, Min } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class CreateWalletDto {
@@ -10,6 +10,7 @@ export class CreateWalletDto {
 export class SetupWalletDto {
   @IsNumber()
   @IsNotEmpty()
+  @Min(0, { message: 'Initial balance cannot be negative.' })
   @Transform(({ value }) => parseFloat(value))
   balance: number;
 
