@@ -19,7 +19,7 @@ export class WalletsService {
         },
       });
 
-      // Create the initial credit transaction for the wallet
+      // Create the initial credit transaction for the wallet 
       const transaction = await prisma.transaction.create({
         data: {
           walletId: wallet.id,
